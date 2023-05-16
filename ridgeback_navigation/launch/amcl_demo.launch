@@ -1,8 +1,10 @@
+<?xml version="1.0"?>
+
 <launch>
   <arg name="scan_topic" default="front/scan" />
 
   <!-- Run the map server -->
-  <arg name="map_file" default="$(find ridgeback_navigation)/maps/ridgeback_race.yaml"/>
+  <arg name="map_file" default="$(find ridgeback_gazebo)/maps/mymap.yaml"/>
   <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
 
   <!--- Run AMCL -->
