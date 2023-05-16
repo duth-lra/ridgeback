@@ -283,6 +283,7 @@
       <inertia ixx="${dummy_inertia}" ixy="0.0" ixz="0.0" iyy="${dummy_inertia}" iyz="0.0" izz="${dummy_inertia}"/>
     </inertial>
   </link>
+
   <joint name="imu_joint" type="fixed">
     <parent link="chassis_link" />
     <child link="imu_link" />
@@ -296,7 +297,34 @@
     <origin xyz="0 0 ${deck_height}" rpy="0 0 0"/>
   </joint>
 
-  <!-- Bring in simulation data for Gazebo. -->
+
+  <link name="body_link">
+    <visual>
+      <geometry>
+        <cylinder length="0.6" radius="0.2"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 .8 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.6" radius="0.2"/>
+      </geometry>
+    </collision>
+<!--     <inertial>
+      <mass value="10"/>
+      <inertia ixx="0.4" ixy="0.0" ixz="0.0" iyy="0.4" iyz="0.0" izz="0.2"/>
+    </inertial> -->
+  </link>
+
+  <joint name="body_joint" type="fixed">
+    <parent link="top_link" />
+    <child link="body_link" />
+    <origin xyz="0.2 0 0.58" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Bring in simuchassis_linklation data for Gazebo. -->
   <xacro:include filename="$(find ridgeback_description)/urdf/ridgeback.gazebo" />
 
   <!-- Optional standard accessories, including their simulation data. The rendering
@@ -306,4 +334,9 @@
 
   <!-- Optional custom includes. -->
   <xacro:include filename="$(optenv RIDGEBACK_URDF_EXTRAS empty.urdf)" />
+  <xacro:include filename="$(find realsense_ros_gazebo)/xacro/depthcam.xacro"/>
+
+  <xacro:realsense_d435 sensor_name="d435" parent_link="body_link" rate="10">
+    <origin rpy="0 0 0 " xyz="0.2 0 0.3"/>
+  </xacro:realsense_d435>
 </robot>
